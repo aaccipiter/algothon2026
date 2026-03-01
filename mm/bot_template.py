@@ -152,11 +152,16 @@ class _SSEThread(Thread):
         self._http_stream = getattr(self._client, "resp", None)
 
         for event in self._client:
+            if not event.data or not event.data.strip():
+                continue
+            try:
+                parsed = json.loads(event.data)
+            except json.JSONDecodeError:
+                continue
             if event.event == "order":
-                self._on_order_event(json.loads(event.data))
+                self._on_order_event(parsed)
             elif event.event == "trade":
-                data = json.loads(event.data)
-                trades = data if isinstance(data, list) else [data]
+                trades = parsed if isinstance(parsed, list) else [parsed]
                 trade_fields = {f.name for f in Trade.__dataclass_fields__.values()}
                 for t in trades:
                     self._handle_trade_event(Trade(**{k: v for k, v in t.items() if k in trade_fields}))

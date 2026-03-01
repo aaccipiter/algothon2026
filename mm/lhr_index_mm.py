@@ -14,7 +14,7 @@ PASSWORD = "bertbertbert"
 
 # ── Product config ───────────────────────────────────────────────────
 PRODUCT = "LHR_INDEX"
-FAIR_VALUE = 170
+FAIR_VALUE = 159
 SPREAD = 5          # total ask - bid width
 ORDER_SIZE = 1
 MAX_POSITION = 100
